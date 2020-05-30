@@ -26,7 +26,9 @@ const noticeTable = 'notice';
 
 const user = {
     autoTransfer: async (userIdx) => {
-        const query = `SELECT * FROM ${userTable} natural join ${noticeTable} WHERE userIdx = ${userIdx}`;  //이렇게 하면 date, name, account 나옴
+        //이렇게 하면 date, name, account 나옴
+        const query = `SELECT * FROM ${userTable} natural join ${noticeTable} WHERE userIdx = ${userIdx}`;
+        //otherUser의 정보를 어떻게 이 정보들이랑 합쳐서 한번에 출력할지 방법 고민중...
         try {
             const result = await pool.queryParamArr(query);
             return result;
