@@ -2,7 +2,6 @@ const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const userModel = require('../models/user');
-const moneyModel = require('../models/moneyList');
 
 const user = {
   showUser : async (req, res) => {
@@ -17,7 +16,7 @@ const user = {
 
   moneyList : async (req, res) => {
     const { userIdx } = req.body;
-    var result = await moneyModel.moneyList(userIdx);
+    var result = await userModel.moneyList(userIdx);
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_TRANSACTION_SUCCESS, {
       result
     }));
