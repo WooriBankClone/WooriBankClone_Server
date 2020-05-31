@@ -33,6 +33,7 @@ module.exports = {
 
     //DB
     DB_ERROR: "DB 오류",
+    WRONG_DATE : "존재하지 않는 기간 설정값입니다.",
 
     //입출금
     READ_TRANSACTION_SUCCESS: "거래 내역 조회 성공",
