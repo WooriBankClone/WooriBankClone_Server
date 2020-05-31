@@ -41,7 +41,7 @@ const capital = {
       "userName" : result.userName,
       "userAccount" : printAccount1,
       "otherName" : result.otherName,
-      "otherAccount" : afterAccount2,
+      "otherAccount" : printAccount2,
       "flag" : result.flag,
       "dueDate" : result.dueDate,
       "content" : result.content
