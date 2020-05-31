@@ -35,7 +35,6 @@ const user = {
         const getAutoTransQuery = `SELECT * FROM ${autoTransTable} WHERE autoTransferIdx = ?`;
 
         let newResult = {};
-        
 
         const getUserResult = await pool.queryParam(getUserQuery);
         if(getUserResult == undefined || getUserResult.length == 0){
