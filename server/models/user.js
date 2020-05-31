@@ -25,8 +25,19 @@ const user = {
             throw err;
         }
     },
-    moneyList: async (userIdx) => {
-        const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx}`;
+    moneyList: async (userIdx, periodFlag) => {
+        
+        //periodFlag값에 따라 정보를 선별해서 가져옴
+        if(periodFlag == 1){
+            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-04-31'`;
+        }else if(periodFlag == 3){
+            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-02-31'`;  
+        }else if(periodFlag == 6){
+            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-11-31'`;
+        }else if(periodFlag == 12){
+            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2019-05-31'`;
+        }
+
         try {
             const result = await pool.queryParamArr(query);
             return result;
