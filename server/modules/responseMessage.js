@@ -40,7 +40,7 @@ module.exports = {
     READ_TRANSACTION_FAIL: "거래 내역 조회 실패",
 
     //자동이체
-    READ_AUTOTRANSFER_SUCCESS: "거래 내역 조회 성공",
-    READ_AUTOTRANSFER_FAIL: "거래 내역 조회 실패"
+    READ_AUTOTRANSFER_SUCCESS: "자동이체 내역 조회 성공",
+    READ_AUTOTRANSFER_FAIL: "자동이체 내역 조회 실패"
     
 };
