@@ -20,35 +20,28 @@ const capital = {
       return;
     }
 
-    var result = await capitalModel.autoTransfer(userIdx);
+    let result = await capitalModel.autoTransfer(userIdx);
 
-    /*
+    
     //자동이체 부분 암호화
-    var beforeAccount1 = result.userAccount;
-    var beforeAccount2 = result.otherAccount;
-    var afterAccount1 = beforeAccount1.split('');
-    var afterAccount2 = beforeAccount2.split('');
-    afterAccount1[5] = '*';
-    afterAccount1[6] = '*';
-    afterAccount1[7] = '*';
-    afterAccount2[5] = '*';
-    afterAccount2[6] = '*';
-    afterAccount2[7] = '*';
-    var printAccount1 = afterAccount1.join('');
-    var printAccount2 = afterAccount2.join('');
-*/
+    for(var i = 0 ; i < result.length ; i++){
+      var afterAccount1 = result[i].userAccount.split('-');
+      let star = "";
+      for(var j = 0 ; j < afterAccount1[1].length ; j ++){ star += "*";}
+      afterAccount1[1] = afterAccount1[1].replace(afterAccount1[1],star);
+
+      var afterAccount2 = result[i].otherAccount.split('-');
+      star = "";
+      for(var j = 0 ; j < afterAccount2[1].length ; j ++){ star += "*";}
+      afterAccount2[1] = afterAccount2[1].replace(afterAccount2[1],star);
+
+      result[i].userAccount = afterAccount1.join('-');
+      result[i].otherAccount = afterAccount2.join('-');
+    }
+
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS,
       result
-      /*
-      "date" : result.date,
-      "userName" : result.userName,
-      "userAccount" : printAccount1,
-      "otherName" : result.otherName,
-      "otherAccount" : printAccount2,
-      "flag" : result.flag,
-      "dueDate" : result.dueDate,
-      "content" : result.content*/
     ));
     return;
   }
