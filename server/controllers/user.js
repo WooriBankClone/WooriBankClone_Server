@@ -51,6 +51,7 @@ const user = {
 
     //입력받은 userIdx로 필요한 정보 가져와서 출력
     var result = await userModel.moneyList(userIdx, periodFlag);
+    if(result)
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_TRANSACTION_SUCCESS, result));
     return;
   }

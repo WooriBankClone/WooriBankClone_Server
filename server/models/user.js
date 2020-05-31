@@ -28,7 +28,7 @@ const user = {
     moneyList: async (userIdx, periodFlag) => {
 
         let query="";
-        const string = "flag, account, other, amount, balance, time, DATE_FORMAT(date,'%Y-%m-%d') AS date";
+        const string = "flag, account, other, amount, balance, time, DATE_FORMAT(date,'%Y년 %m월 %d일') AS date, DAYOFWEEK(date) AS weekday";
 
         //periodFlag값에 따라 정보를 선별해서 가져옴
         if(periodFlag == 1){
@@ -51,7 +51,40 @@ const user = {
                 if(result[i].flag == 1){
                     result[i].account = userResult[0].account;
                 }
-            }
+
+                //DAYOFWEEK(date)값에 따라 요일을 구분해서 date string에 더해줌
+                switch(result[i].weekday){
+                    case 1 :
+                        result[i].weekday = " 일요일";
+                        result[i].date += result[i].weekday;
+                        break;
+                    case 2 :
+                        result[i].weekday = " 월요일";
+                        result[i].date += result[i].weekday;
+                        break;
+                    case 3 :
+                        result[i].weekday = " 화요일";
+                        result[i].date += result[i].weekday;
+                        break;
+                    case 4 :
+                        result[i].weekday = " 수요일";
+                        result[i].date += result[i].weekday;
+                        break;
+                    case 5 :
+                        result[i].weekday = " 목요일";
+                        result[i].date += result[i].weekday;
+                        break;
+                    case 6 :
+                        result[i].weekday = " 금요일";
+                        result[i].date += result[i].weekday;
+                        break;
+                    case 7 :
+                        result[i].weekday = " 토요일";
+                        result[i].date += result[i].weekday;
+                        break;
+                }
+                delete result[i].weekday;
+            }    
             return result;
         } catch (err) {
             console.log('입출금 내역 조회 실패 : ', err);
