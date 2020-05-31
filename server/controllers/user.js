@@ -29,8 +29,7 @@ const user = {
   },
 
   moneyList : async (req, res) => {
-    const { userIdx } = req.body;
-    const { periodFlag } = req.param;
+    const { userIdx, periodFlag } = req.body;
 
     //userIdx값을 입력받았는지 확인
     if(userIdx == undefined){

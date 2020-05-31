@@ -3,6 +3,6 @@ var router = express.Router();
 const userController = require('../controllers/user');
 
 router.get('/', userController.showUser);
-router.get('/moneyList/:periodFlag', userController.moneyList);
+router.get('/moneyList', userController.moneyList);
 
 module.exports = router;
