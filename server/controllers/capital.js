@@ -38,7 +38,7 @@ const capital = {
     var printAccount2 = afterAccount2.join('');
 */
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS, 
+    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS,
       result
       /*
       "date" : result.date,
