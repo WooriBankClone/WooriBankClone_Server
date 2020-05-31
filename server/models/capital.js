@@ -37,16 +37,12 @@ const capital = {
         let newResult = [];
 
         const getUserResult = await pool.queryParam(getUserQuery);
-        console.log("getUser");
-        console.log(getUserResult);
         /*if(getUserResult == undefined || getUserResult.length == 0){
             
             throw err;
         }*/
 
         const getNoticeResult = await pool.queryParamArr(getNoticeQuery, [getUserResult[0].userIdx]);
-        console.log("getNotice");
-        console.log(getNoticeResult);
         /*if(getNoticeResult == undefined || getNoticeResult.length == 0){
             throw err;
         }*/
@@ -71,7 +67,6 @@ const capital = {
                 newResult.push(addResult);
             }
         }
-
 
         return newResult;
 
