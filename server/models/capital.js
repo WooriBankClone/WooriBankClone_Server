@@ -34,33 +34,44 @@ const user = {
         const getNoticeQuery = `SELECT * FROM ${noticeTable} WHERE noticeIdx = ?`;
         const getAutoTransQuery = `SELECT * FROM ${autoTransTable} WHERE autoTransferIdx = ?`;
 
-        let newResult = {};
+        let newResult = [];
 
         const getUserResult = await pool.queryParam(getUserQuery);
-        if(getUserResult == undefined || getUserResult.length == 0){
+        /*if(getUserResult == undefined || getUserResult.length == 0){
             
             throw err;
-        }
-        newResult.userName = getUserResult[0].userName;
-        newResult.userAccount = getUserResult[0].userAccount;
+        }*/
 
         const getNoticeResult = await pool.queryParam_Arr(getNoticeQuery, [getUserResult[0].userIdx]);
-        if(getNoticeResult == undefined || getNoticeResult.length == 0){
+        /*if(getNoticeResult == undefined || getNoticeResult.length == 0){
             throw err;
-        }
+        }*/
+        
         //한 유저 당 notice는 날짜별로 여러개 > for문
-        newResult.date = getNoticeResult[0].date;
-
-        const getAutoTransResult = await pool.queryParam_Arr(getAutoTransQuery, [getNoticeResult[0].noticeIdx]);
-        if(getAutoTransResult == undefined || getAutoTransResult.length == 0){
-            throw err;
+        for (var i = 0; i < getNoticeResult.length; i++){
+            const getAutoTransResult = await pool.queryParam_Arr(getAutoTransQuery, [getNoticeResult[i].noticeIdx]);
+            /*if(getAutoTransResult == undefined || getAutoTransResult.length == 0){
+                throw err;
+            }*/
+            //notice 한 날짜에 내역 여러개 > for문
+            for (var j = 0; j < getAutoTransResult.length; j++){
+                let addResult = {};
+                addResult.date = getNoticeResult[i].date;
+                addResult.userName = getUserResult[i].userName;
+                addResult.userAccount = getUserResult[i].userAccount;
+                addResult.otherName = getAutoTransResult[j].otherName;
+                addResult.otherAccount = getAutoTransResult[j].otherAccount;
+                addResult.flag = getAutoTransResult[j].flag;
+                addResult.dueDate = getAutoTransResult[j].dueDate;
+                addResult.content = getAutoTransResult[j].content;
+                newResult.push(addResult);
+            }
         }
-        //notice 한 날짜에 내역 여러개 > for문
 
 
         return newResult;
 
-        
+/*
         //
         //이렇게 하면 date, name, account 나옴
         const query = `SELECT * FROM ${userTable} natural join ${noticeTable} WHERE userIdx = ${userIdx}`;
@@ -71,7 +82,7 @@ const user = {
         } catch (err) {
             console.log('자동 이체 내역 조회 실패 : ', err);
             throw err;
-        }
+        }*/
     }
 }
 
