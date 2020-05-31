@@ -26,16 +26,18 @@ const user = {
         }
     },
     moneyList: async (userIdx, periodFlag) => {
+
+        let query="";
         
         //periodFlag값에 따라 정보를 선별해서 가져옴
         if(periodFlag == 1){
-            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-04-31'`;
+            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-04-31'`;
         }else if(periodFlag == 3){
-            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-02-31'`;  
+            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-02-31'`;  
         }else if(periodFlag == 6){
-            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-11-31'`;
+            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-11-31'`;
         }else if(periodFlag == 12){
-            const query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2019-05-31'`;
+            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2019-05-31'`;
         }
 
         try {
