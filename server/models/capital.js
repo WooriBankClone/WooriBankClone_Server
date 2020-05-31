@@ -24,32 +24,36 @@ const noticeTable = 'notice';
     }
 */
 
-const user = {
+const capital = {
     autoTransfer: async (userIdx) => {
 
-        const query = `SELECT * FROM ${userTable} WHERE userIdx = ${userIdx}`;
+        //const query = `SELECT * FROM ${userTable} WHERE userIdx = ${userIdx}`;
 
 
         const getUserQuery = `SELECT * FROM ${userTable} WHERE userIdx = ${userIdx}`;
-        const getNoticeQuery = `SELECT * FROM ${noticeTable} WHERE noticeIdx = ?`;
-        const getAutoTransQuery = `SELECT * FROM ${autoTransTable} WHERE autoTransferIdx = ?`;
+        const getNoticeQuery = `SELECT * FROM ${noticeTable} WHERE userIdx = ?`;
+        const getAutoTransQuery = `SELECT * FROM ${autoTransTable} WHERE noticeIdx = ?`;
 
         let newResult = [];
 
         const getUserResult = await pool.queryParam(getUserQuery);
+        console.log("getUser");
+        console.log(getUserResult);
         /*if(getUserResult == undefined || getUserResult.length == 0){
             
             throw err;
         }*/
 
-        const getNoticeResult = await pool.queryParam_Arr(getNoticeQuery, [getUserResult[0].userIdx]);
+        const getNoticeResult = await pool.queryParamArr(getNoticeQuery, [getUserResult[0].userIdx]);
+        console.log("getNotice");
+        console.log(getNoticeResult);
         /*if(getNoticeResult == undefined || getNoticeResult.length == 0){
             throw err;
         }*/
         
         //한 유저 당 notice는 날짜별로 여러개 > for문
         for (var i = 0; i < getNoticeResult.length; i++){
-            const getAutoTransResult = await pool.queryParam_Arr(getAutoTransQuery, [getNoticeResult[i].noticeIdx]);
+            const getAutoTransResult = await pool.queryParamArr(getAutoTransQuery, [getNoticeResult[i].noticeIdx]);
             /*if(getAutoTransResult == undefined || getAutoTransResult.length == 0){
                 throw err;
             }*/
@@ -57,8 +61,8 @@ const user = {
             for (var j = 0; j < getAutoTransResult.length; j++){
                 let addResult = {};
                 addResult.date = getNoticeResult[i].date;
-                addResult.userName = getUserResult[i].userName;
-                addResult.userAccount = getUserResult[i].userAccount;
+                addResult.userName = getUserResult[0].name;
+                addResult.userAccount = getUserResult[0].account;
                 addResult.otherName = getAutoTransResult[j].otherName;
                 addResult.otherAccount = getAutoTransResult[j].otherAccount;
                 addResult.flag = getAutoTransResult[j].flag;
@@ -86,4 +90,4 @@ const user = {
     }
 }
 
-module.exports = user;
+module.exports = capital;

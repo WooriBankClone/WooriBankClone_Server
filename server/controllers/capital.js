@@ -20,8 +20,9 @@ const capital = {
       return;
     }
 
-    var result = await moneyModel.moneyList(userIdx);
+    var result = await capitalModel.autoTransfer(userIdx);
 
+    /*
     //자동이체 부분 암호화
     var beforeAccount1 = result.userAccount;
     var beforeAccount2 = result.otherAccount;
@@ -35,8 +36,11 @@ const capital = {
     afterAccount2[7] = '*';
     var printAccount1 = afterAccount1.join('');
     var printAccount2 = afterAccount2.join('');
+*/
 
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS, {
+    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS, 
+      result
+      /*
       "date" : result.date,
       "userName" : result.userName,
       "userAccount" : printAccount1,
@@ -44,8 +48,8 @@ const capital = {
       "otherAccount" : printAccount2,
       "flag" : result.flag,
       "dueDate" : result.dueDate,
-      "content" : result.content
-    }));
+      "content" : result.content*/
+    ));
     return;
   }
 }
