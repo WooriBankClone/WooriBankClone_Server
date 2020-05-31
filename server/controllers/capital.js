@@ -20,18 +20,31 @@ const capital = {
       return;
     }
 
-    //자동이체 부분 암호화
-
     var result = await moneyModel.moneyList(userIdx);
-    var beforeAccount = result.account;
-    var afterAccount = beforeAccount.split('');
-    afterAccount[5] = '*';
-    afterAccount[6] = '*';
-    afterAccount[7] = '*';
-    var printAccount = afterAccount.join('');
+
+    //자동이체 부분 암호화
+    var beforeAccount1 = result.userAccount;
+    var beforeAccount2 = result.otherAccount;
+    var afterAccount1 = beforeAccount1.split('');
+    var afterAccount2 = beforeAccount3.split('');
+    afterAccount1[5] = '*';
+    afterAccount1[6] = '*';
+    afterAccount1[7] = '*';
+    afterAccount2[5] = '*';
+    afterAccount2[6] = '*';
+    afterAccount2[7] = '*';
+    var printAccount1 = afterAccount1.join('');
+    var printAccount2 = afterAccount2.join('');
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS, {
-      result
+      "date" : result.date,
+      "userName" : result.userName,
+      "userAccount" : printAccount1,
+      "otherName" : result.otherName,
+      "otherAccount" : afterAccount2,
+      "flag" : result.flag,
+      "dueDate" : result.dueDate,
+      "content" : result.content
     }));
     return;
   }
