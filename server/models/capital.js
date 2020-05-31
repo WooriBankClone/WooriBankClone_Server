@@ -1,6 +1,6 @@
 const pool = require('../modules/pool');
 const userTable = 'user';
-const moneyListTable = 'moneyList';
+const autoTransTable = 'autoTransfer';
 const noticeTable = 'notice';
 
 /*
@@ -26,6 +26,43 @@ const noticeTable = 'notice';
 
 const user = {
     autoTransfer: async (userIdx) => {
+
+        const query = `SELECT * FROM ${userTable} WHERE userIdx = ${userIdx}`;
+
+
+        const getUserQuery = `SELECT * FROM ${userTable} WHERE userIdx = ${userIdx}`;
+        const getNoticeQuery = `SELECT * FROM ${noticeTable} WHERE noticeIdx = ?`;
+        const getAutoTransQuery = `SELECT * FROM ${autoTransTable} WHERE autoTransferIdx = ?`;
+
+        let newResult = {};
+        
+
+        const getUserResult = await pool.queryParam(getUserQuery);
+        if(getUserResult == undefined || getUserResult.length == 0){
+            
+            throw err;
+        }
+        newResult.userName = getUserResult[0].userName;
+        newResult.userAccount = getUserResult[0].userAccount;
+
+        const getNoticeResult = await pool.queryParam_Arr(getNoticeQuery, [getUserResult[0].userIdx]);
+        if(getNoticeResult == undefined || getNoticeResult.length == 0){
+            throw err;
+        }
+        //한 유저 당 notice는 날짜별로 여러개 > for문
+        newResult.date = getNoticeResult[0].date;
+
+        const getAutoTransResult = await pool.queryParam_Arr(getAutoTransQuery, [getNoticeResult[0].noticeIdx]);
+        if(getAutoTransResult == undefined || getAutoTransResult.length == 0){
+            throw err;
+        }
+        //notice 한 날짜에 내역 여러개 > for문
+
+
+        return newResult;
+
+        
+        //
         //이렇게 하면 date, name, account 나옴
         const query = `SELECT * FROM ${userTable} natural join ${noticeTable} WHERE userIdx = ${userIdx}`;
         //otherUser의 정보를 어떻게 이 정보들이랑 합쳐서 한번에 출력할지 방법 고민중...
