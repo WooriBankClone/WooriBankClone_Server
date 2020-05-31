@@ -28,20 +28,30 @@ const user = {
     moneyList: async (userIdx, periodFlag) => {
 
         let query="";
-        
+        const string = "flag, account, other, amount, balance, time, DATE_FORMAT(date,'%Y-%m-%d') AS date";
+
         //periodFlag값에 따라 정보를 선별해서 가져옴
         if(periodFlag == 1){
-            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-04-31'`;
+            query = `SELECT ${string} FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > (NOW() - INTERVAL 1 MONTH)`;
         }else if(periodFlag == 3){
-            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-02-31'`;  
+            query = `SELECT ${string} FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > (NOW() - INTERVAL 3 MONTH)`;  
         }else if(periodFlag == 6){
-            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2020-11-31'`;
+            query = `SELECT ${string} FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > (NOW() - INTERVAL 6 MONTH)`;
         }else if(periodFlag == 12){
-            query = `SELECT * FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > '2019-05-31'`;
+            query = `SELECT ${string} FROM ${moneyListTable} WHERE userIdx = ${userIdx} AND DATE(date) > (NOW() - INTERVAL 1 YEAR)`;
         }
 
+        let getUserQuery = `SELECT * FROM ${userTable} WHERE userIdx = "${userIdx}"`;
+
         try {
+            const userResult = await pool.queryParam(getUserQuery);
             const result = await pool.queryParamArr(query);
+            //result for문 돌면서 flag가 1이면, 본인 계좌
+            for(var i=0 ; i < result.length ; i++){
+                if(result[i].flag == 1){
+                    result[i].account = userResult[0].account;
+                }
+            }
             return result;
         } catch (err) {
             console.log('입출금 내역 조회 실패 : ', err);
