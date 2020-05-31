@@ -26,10 +26,15 @@ const capital = {
     //자동이체 부분 암호화
     for(var i = 0 ; i < result.length ; i++){
       var afterAccount1 = result[i].userAccount.split('-');
-      console.log(afterAccount1);
-      afterAccount1[1].replace(afterAccount1[1],'**');
+      let star = "";
+      for(var j = 0 ; j < afterAccount1[1].length ; j ++){ star += "*";}
+      afterAccount1[1] = afterAccount1[1].replace(afterAccount1[1],star);
+
       var afterAccount2 = result[i].otherAccount.split('-');
-      afterAccount2[1].replace(afterAccount2[1],"*");
+      star = "";
+      for(var j = 0 ; j < afterAccount2[1].length ; j ++){ star += "*";}
+      afterAccount2[1] = afterAccount2[1].replace(afterAccount2[1],star);
+
       result[i].userAccount = afterAccount1.join('-');
       result[i].otherAccount = afterAccount2.join('-');
     }
@@ -37,15 +42,6 @@ const capital = {
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS,
       result
-      /*
-      "date" : result.date,
-      "userName" : result.userName,
-      "userAccount" : printAccount1,
-      "otherName" : result.otherName,
-      "otherAccount" : printAccount2,
-      "flag" : result.flag,
-      "dueDate" : result.dueDate,
-      "content" : result.content*/
     ));
     return;
   }
