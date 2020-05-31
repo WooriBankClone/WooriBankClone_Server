@@ -20,23 +20,20 @@ const capital = {
       return;
     }
 
-    var result = await capitalModel.autoTransfer(userIdx);
+    let result = await capitalModel.autoTransfer(userIdx);
 
-    /*
+    
     //자동이체 부분 암호화
-    var beforeAccount1 = result.userAccount;
-    var beforeAccount2 = result.otherAccount;
-    var afterAccount1 = beforeAccount1.split('');
-    var afterAccount2 = beforeAccount2.split('');
-    afterAccount1[5] = '*';
-    afterAccount1[6] = '*';
-    afterAccount1[7] = '*';
-    afterAccount2[5] = '*';
-    afterAccount2[6] = '*';
-    afterAccount2[7] = '*';
-    var printAccount1 = afterAccount1.join('');
-    var printAccount2 = afterAccount2.join('');
-*/
+    for(var i = 0 ; i < result.length ; i++){
+      var afterAccount1 = result[i].userAccount.split('-');
+      console.log(afterAccount1);
+      afterAccount1[1].replace(afterAccount1[1],'**');
+      var afterAccount2 = result[i].otherAccount.split('-');
+      afterAccount2[1].replace(afterAccount2[1],"*");
+      result[i].userAccount = afterAccount1.join('-');
+      result[i].otherAccount = afterAccount2.join('-');
+    }
+
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_AUTOTRANSFER_SUCCESS,
       result
